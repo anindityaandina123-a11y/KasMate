@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KasMate - Solusi Digital Pertamaku, Didukung oleh AI</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #74b9ff, #e66fe6);
+            color: #333;
+            overflow-x: hidden;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            animation: fadeIn 1s ease-in;
+        }
+        h1 {
+            margin: 0;
+            color: #0984e3;
+            font-size: 2.5em;
+        }
+        .subtitle {
+            font-size: 1.2em;
+            color: #636e72;
+        }
+        .page {
+            display: none;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            animation: slideIn 0.5s ease-in;
+        }
+        .page.active {
+            display: block;
+        }
+        nav {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        nav button {
+            background: #0984e3;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 0 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+        }
+        nav button:hover {
+            background: #74b9ff;
+            transform: scale(1.05);
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        input, select, textarea {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+        button {
+            background: #00b894;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #00cec9;
+        }
+        .student-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .student-card {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        .student-card:hover {
+            transform: translateY(-5px);
+        }
+        .paid {
+            border-left: 5px solid #00b894;
+        }
+        .unpaid {
+            border-left: 5px solid #d63031;
+        }
+        .edit-btn {
+            background: #e17055;
+            margin-top: 10px;
+        }
+        .edit-btn:hover {
+            background: #fdcb6e;
+        }
+        .delete-btn {
+            background: #d63031;
+            color: white;
+            margin-top: 10px;
+            border: none;
+            padding: 8px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .delete-btn:hover {
+            background: #ff7675;
+        }
+        .upload {
+            margin-top: 10px;
+        }
+        .receipt-preview {
+            max-width: 200px;
+            margin-top: 10px;
+            border-radius: 5px;
+        }
+        .target-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .target-card {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .payment-details {
+            display: none;
+        }
+        .payment-details.show {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideIn {
+            from { transform: translateX(-100%); }
+            to { transform: translateX(0); }
+        }
+        .ai-support {
+            text-align: center;
+            margin-top: 20px;
+            font-style: italic;
+            color: #636e72;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+        .security-note {
+            font-size: 0.9em;
+            color: #e74c3c;
+            text-align: center;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>KasMate</h1>
+            <p class="subtitle">Solusi Digital Pertamaku, Didukung oleh AI</p>
+            <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=150&q=80" alt="KasMate Logo - Ilustrasi Pengelolaan Uang" style="margin-top: 10px;">
+        </header>
+
+        <div id="login-page" class="page active">
+            <h2>Login</h2>
+            <form id="login-form">
+                <input type="email" id="login-email" placeholder="Email" required>
+                <input type="password" id="login-password" placeholder="Password" required minlength="6">
+                <button type="submit">Masuk</button>
+            </form>
+            <p id="login-error" style="color:#e74c3c; text-align:center; display:none;">Email atau password salah.</p>
+            <p style="text-align:center; margin-top:8px;">Belum punya akun? <a href="#" id="show-register">Daftar</a></p>
+            <div id="register-block" style="display:none; margin-top:12px;">
+                <h3>Daftar Akun</h3>
+                <form id="register-form">
+                    <input type="text" id="reg-username" placeholder="Nama Pengguna" required>
+                    <input type="email" id="reg-email" placeholder="Email" required>
+                    <input type="password" id="reg-password" placeholder="Password (min 6 karakter)" required minlength="6">
+                    <input type="password" id="reg-password-confirm" placeholder="Konfirmasi Password" required minlength="6">
+                    <button type="submit">Buat Akun</button>
+                </form>
+                <p id="register-error" style="color:#e74c3c; text-align:center; display:none;">Terjadi kesalahan saat pendaftaran.</p>
+            </div>
+            <p class="security-note">Data Anda disimpan secara lokal dan tidak dikirim ke server. Gunakan password yang kuat dan jaga privasi email Anda.</p>
+        </div>
+
+        <div id="home-page" class="page">
+            <nav>
+                <button onclick="showPage('home-page')">Home</button>
+                <button onclick="showPage('profile-page')">Profil</button>
+                <button onclick="showPage('target-page')">Target</button>
+                <button onclick="showPage('report-page')">Laporan Keuangan</button>
+                <button onclick="logout()">Logout</button>
+            </nav>
+            <h2>Data Siswa</h2>
+            <div class="student-list" id="student-list">
+                <!-- Siswa akan ditambahkan secara dinamis -->
+            </div>
+            <button onclick="addStudent()">Tambah Siswa</button>
+            <h3>Pemasukan & Pengeluaran</h3>
+            <form id="transaction-form">
+                <select id="type">
+                    <option value="income">Pemasukan</option>
+                    <option value="expense">Pengeluaran</option>
+                </select>
+                <input type="number" id="amount" placeholder="Nominal (Rp)" required>
+                <input type="date" id="date" required>
+                <textarea id="description" placeholder="Deskripsi"></textarea>
+                <div class="upload">
+                    <input type="file" id="receipt" accept="image/*" onchange="previewReceipt()">
+                    <label for="receipt">Upload Struk/Nota</label>
+                    <img id="receipt-preview" class="receipt-preview" style="display:none;" alt="Preview Struk">
+                </div>
+                <button type="submit">Tambah Transaksi</button>
+            </form>
+            <h3>Total Kas: <span id="total">0</span> Rp</h3>
+            <button onclick="generateMonthlyReport()">Rekap Bulanan</button>
+        </div>
+
+        <div id="profile-page" class="page">
+            <nav>
+                <button onclick="showPage('home-page')">Home</button>
+                <button onclick="showPage('profile-page')">Profil</button>
+                <button onclick="showPage('target-page')">Target</button>
+                <button onclick="showPage('report-page')">Laporan Keuangan</button>
+                <button onclick="logout()">Logout</button>
+            </nav>
+            <h2>Profil Kelas</h2>
+            <form id="profile-form">
+                <input type="text" id="class-name" placeholder="Nama Kelas" required>
+                <input type="number" id="total-students" placeholder="Jumlah Siswa" required>
+                <select id="payment-method" onchange="togglePaymentDetails()">
+                    <option value="cash">Cash</option>
+                    <option value="digital">Digital (E-Wallet/Bank)</option>
+                </select>
+                <div id="payment-details" class="payment-details">
+                    <select id="digital-type">
+                        <option value="dana">Dana</option>
+                        <option value="gopay">GoPay</option>
+                        <option value="linkaja">LinkAja</option>
+                        <option value="shopeepay">ShopeePay</option>
+                        <option value="bank">Bank</option>
+                        <option value="qris">QRIS</option>
+                        <option value="other">E-Wallet Lain</option>
+                    </select>
+                    <input type="text" id="account-number" placeholder="Nomor Akun/E-Wallet/Rekening" required>
+                    <input type="text" id="account-name" placeholder="Nama Pemilik Akun" required>
+                </div>
+                <button type="submit">Simpan</button>
+            </form>
+        </div>
+
+        <div id="target-page" class="page">
+            <nav>
+                <button onclick="showPage('home-page')">Home</button>
+                <button onclick="showPage('profile-page')">Profil</button>
+                <button onclick="showPage('target-page')">Target</button>
+                <button onclick="showPage('report-page')">Laporan Keuangan</button>
+                <button onclick="logout()">Logout</button>
+            </nav>
+            <h2>Target Kelas</h2>
+            <div class="target-list" id="target-list">
+                <!-- Target akan ditambahkan secara dinamis -->
+            </div>
+            <button onclick="addTarget()">Tambah Target</button>
+        </div>
+
+        <div id="report-page" class="page">
+            <nav>
+                <button onclick="showPage('home-page')">Home</button>
+                <button onclick="showPage('profile-page')">Profil</button>
+                <button onclick="showPage('target-page')">Target</button>
+                <button onclick="showPage('report-page')">Laporan Keuangan</button>
+                <button onclick="logout()">Logout</button>
+            </nav>
+            <h2>Laporan Keuangan</h2>
+            <div id="report-content">
+                <!-- Laporan akan ditampilkan di sini -->
+            </div>
+        </div>
+
+        <div class="ai-support">
+            Didukung oleh AI untuk kemudahan pengelolaan kas kelas. Data disimpan secara lokal untuk privasi maksimal.
+        </div>
+    </div>
+
+    <script>
+        // In-memory state (per-account data will be loaded on login)
+        let students = [];
+        let transactions = [];
+        let total = 0;
+        let user = JSON.parse(localStorage.getItem('user')) || null;
+        let targets = [];
+        let profile = {};
+
+        function showPage(pageId) {
+            if (!user && pageId !== 'login-page') return;
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+        }
+
+        // Account helpers
+        function getAccounts() {
+            return JSON.parse(localStorage.getItem('accounts')) || [];
+        }
+
+        function saveAccounts(accounts) {
+            localStorage.setItem('accounts', JSON.stringify(accounts));
+        }
+
+        // Account-scoped data helpers
+        function accountKey(email) {
+            return `account_data_${email}`;
+        }
+
+        function getAccountData(email) {
+            return JSON.parse(localStorage.getItem(accountKey(email)));
+        }
+
+        function saveAccountData(email, data) {
+            localStorage.setItem(accountKey(email), JSON.stringify(data));
+        }
+
+        function saveCurrentAccount() {
+            if (!user || !user.email) return;
+            const data = { students, transactions, total, targets, profile };
+            saveAccountData(user.email, data);
+        }
+
+        function initializeDefaultData() {
+            return {
+                students: [
+                    { name: 'Anak 1', paid: false, amount: 50000 },
+                    { name: 'Anak 2', paid: true, amount: 50000 }
+                ],
+                transactions: [],
+                total: 0,
+                targets: [],
+                profile: {}
+            };
+        }
+
+        function loadAccountData(email) {
+            const data = getAccountData(email);
+            if (data) {
+                students = data.students || [];
+                transactions = data.transactions || [];
+                total = parseInt(data.total) || 0;
+                targets = data.targets || [];
+                profile = data.profile || {};
+            } else {
+                const def = initializeDefaultData();
+                students = def.students;
+                transactions = def.transactions;
+                total = def.total;
+                targets = def.targets;
+                profile = def.profile;
+                saveAccountData(email, { students, transactions, total, targets, profile });
+            }
+        }
+
+        // Login handler: check email + password against stored accounts
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value.trim().toLowerCase();
+            const password = document.getElementById('login-password').value;
+            const accounts = getAccounts();
+            const account = accounts.find(a => a.email === email && a.password === password);
+            const err = document.getElementById('login-error');
+            if (account) {
+                user = { username: account.username, email: account.email };
+                localStorage.setItem('user', JSON.stringify(user));
+                // Load account-scoped data and render
+                loadAccountData(account.email);
+                err.style.display = 'none';
+                showPage('home-page');
+                renderStudents();
+                renderTargets();
+                loadProfile();
+            } else {
+                err.textContent = 'Email atau password salah.';
+                err.style.display = 'block';
+            }
+        });
+
+        // Toggle register block
+        document.getElementById('show-register').addEventListener('click', function(e) {
+            e.preventDefault();
+            const block = document.getElementById('register-block');
+            block.style.display = block.style.display === 'none' ? 'block' : 'none';
+        });
+
+        // Register handler
+        document.getElementById('register-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('reg-username').value.trim();
+            const email = document.getElementById('reg-email').value.trim().toLowerCase();
+            const password = document.getElementById('reg-password').value;
+            const confirm = document.getElementById('reg-password-confirm').value;
+            const err = document.getElementById('register-error');
+            err.style.display = 'none';
+            // Basic validation
+            if (!username || !email || !password) {
+                err.textContent = 'Semua bidang wajib diisi.';
+                err.style.display = 'block';
+                return;
+            }
+            if (password.length < 6) {
+                err.textContent = 'Password minimal 6 karakter.';
+                err.style.display = 'block';
+                return;
+            }
+            if (password !== confirm) {
+                err.textContent = 'Password dan konfirmasi tidak cocok.';
+                err.style.display = 'block';
+                return;
+            }
+            const accounts = getAccounts();
+            if (accounts.find(a => a.email === email)) {
+                err.textContent = 'Email sudah terdaftar. Silakan login.';
+                err.style.display = 'block';
+                return;
+            }
+            accounts.push({ username, email, password });
+            saveAccounts(accounts);
+            // initialize per-account storage with defaults
+            saveAccountData(email, initializeDefaultData());
+            alert('Akun berhasil dibuat. Silakan login.');
+            document.getElementById('register-block').style.display = 'none';
+            document.getElementById('login-email').value = email;
+            document.getElementById('login-password').value = '';
+        });
+
+        function logout() {
+            // Clear in-memory state so next login starts fresh
+            user = null;
+            students = [];
+            transactions = [];
+            total = 0;
+            targets = [];
+            profile = {};
+            localStorage.removeItem('user');
+            showPage('login-page');
+        }
+
+        function renderStudents() {
+            const list = document.getElementById('student-list');
+            list.innerHTML = '';
+            students.forEach((student, index) => {
+                const card = document.createElement('div');
+                card.className = `student-card ${student.paid ? 'paid' : 'unpaid'}`;
+                card.innerHTML = `
+                    <h4>${student.name}</h4>
+                    <p>Status: ${student.paid ? 'Sudah Bayar' : 'Belum Bayar'}</p>
+                    <p>Nominal: ${student.amount} Rp</p>
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                        <button class="edit-btn" onclick="editStudent(${index})">Edit</button>
+                        <button class="delete-btn" onclick="deleteStudent(${index})">Hapus</button>
+                    </div>
+                `;
+                list.appendChild(card);
+            });
+            updateTotal();
+            saveCurrentAccount();
+        }
+
+        function deleteStudent(index) {
+            if (index < 0 || index >= students.length) return;
+            const ok = confirm(`Hapus data siswa "${students[index].name}"? Tindakan ini tidak dapat dibatalkan.`);
+            if (!ok) return;
+            students.splice(index, 1);
+            renderStudents();
+        }
+
+        function addStudent() {
+            const name = prompt('Nama Siswa:');
+            const amount = prompt('Nominal Kas:');
+            if (name && amount) {
+                students.push({ name, paid: false, amount: parseInt(amount) });
+                renderStudents();
+            }
+        }
+
+        function editStudent(index) {
+            const student = students[index];
+            const newName = prompt('Nama Baru:', student.name);
+            const newAmount = prompt('Nominal Baru:', student.amount);
+            const paid = confirm('Sudah Bayar?');
+            if (newName && newAmount) {
+                students[index] = { name: newName, paid, amount: parseInt(newAmount) };
+                renderStudents();
+            }
+        }
+
+        document.getElementById('transaction-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const type = document.getElementById('type').value;
+            const amount = parseInt(document.getElementById('amount').value);
+            const date = document.getElementById('date').value;
+            const description = document.getElementById('description').value;
+            const receipt = document.getElementById('receipt').files[0];
+            transactions.push({ type, amount, date, description, receipt: receipt ? URL.createObjectURL(receipt) : null });
+            if (type === 'income') total += amount;
+            else total -= amount;
+            updateTotal();
+            saveCurrentAccount();
+            this.reset();
+            document.getElementById('receipt-preview').style.display = 'none';
+        });
+
+        function previewReceipt() {
+            const file = document.getElementById('receipt').files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('receipt-preview').src = e.target.result;
+                    document.getElementById('receipt-preview').style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function updateTotal() {
+            document.getElementById('total').textContent = total;
+        }
+
+        function generateMonthlyReport() {
+            const content = document.getElementById('report-content');
+            content.innerHTML = '<h3>Rekap Bulanan</h3>';
+            renderMonthlySummary(content);
+            // Details for current month
+            const currentMonth = new Date().getMonth();
+            const currentYear = new Date().getFullYear();
+            const report = transactions.filter(t => {
+                const d = new Date(t.date);
+                return d.getMonth() === currentMonth && d.getFullYear() === currentYear;
+            });
+            if (report.length) {
+                content.innerHTML += '<h4>Detail Bulan Ini</h4>';
+                report.forEach(t => {
+                    content.innerHTML += `<p>${t.date}: ${t.type} - ${t.amount} Rp - ${t.description}</p>`;
+                    if (t.receipt) content.innerHTML += `<img src="${t.receipt}" alt="Struk" style="max-width:200px; margin:10px;">`;
+                });
+            } else {
+                content.innerHTML += '<p>Tidak ada transaksi untuk bulan ini.</p>';
+            }
+            showPage('report-page');
+        }
+
+        function renderMonthlySummary(containerEl) {
+            // Group transactions by YYYY-MM
+            const groups = {};
+            transactions.forEach(t => {
+                if (!t.date) return;
+                const d = new Date(t.date);
+                if (isNaN(d)) return;
+                const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+                if (!groups[key]) groups[key] = { income: 0, expense: 0 };
+                if (t.type === 'income') groups[key].income += Number(t.amount) || 0;
+                else groups[key].expense += Number(t.amount) || 0;
+            });
+            // Sort keys descending (most recent first)
+            const keys = Object.keys(groups).sort((a,b) => b.localeCompare(a));
+            containerEl.innerHTML += '<h4>Ringkasan Bulanan (Terakhir)</h4>';
+            if (!keys.length) {
+                containerEl.innerHTML += '<p>Tidak ada data transaksi.</p>';
+                return;
+            }
+            containerEl.innerHTML += '<div style="display:flex;flex-direction:column;gap:6px;">';
+            keys.forEach(k => {
+                const g = groups[k];
+                containerEl.innerHTML += `<div style="background:#fff;padding:8px;border-radius:6px;"><strong>${k}</strong>: Pemasukan ${g.income} Rp — Pengeluaran ${g.expense} Rp</div>`;
+            });
+            containerEl.innerHTML += '</div>';
+        }
+
+        function renderTargets() {
+            const list = document.getElementById('target-list');
+            list.innerHTML = '';
+            targets.forEach((target, index) => {
+                const card = document.createElement('div');
+                card.className = 'target-card';
+                card.innerHTML = `
+                    <h4>${target.name}</h4>
+                    <p>Harga: ${target.price} Rp</p>
+                    <p>Jangka Waktu: ${target.deadline}</p>
+                    <p>Patokan Uang: ${target.budget} Rp</p>
+                    <p>Deskripsi: ${target.description}</p>
+                    ${target.image ? `<img src="${target.image}" alt="Target Image" style="max-width:200px;">` : ''}
+                    ${target.link ? `<p>Link: <a href="${target.link}" target="_blank">${target.link}</a></p>` : ''}
+                    <button class="edit-btn" onclick="editTarget(${index})">Edit</button>
+                `;
+                    list.appendChild(card);
+                });
+                saveCurrentAccount();
+        }
+
+        function addTarget() {
+            const name = prompt('Nama Target:');
+            const price = prompt('Harga:');
+            const deadline = prompt('Jangka Waktu (YYYY-MM-DD):');
+            const budget = prompt('Patokan Uang:');
+            const description = prompt('Deskripsi:');
+            const image = prompt('URL Gambar (opsional):');
+            const link = prompt('Link (opsional):');
+            if (name && price && deadline && budget) {
+                targets.push({ name, price: parseInt(price), deadline, budget: parseInt(budget), description, image, link });
+                renderTargets();
+            }
+        }
+
+        function editTarget(index) {
+            const target = targets[index];
+            const name = prompt('Nama Target:', target ? target.name : '');
+            const price = prompt('Harga:', target ? target.price : '0');
+            const deadline = prompt('Jangka Waktu (YYYY-MM-DD):', target ? target.deadline : '');
+            const budget = prompt('Patokan Uang:', target ? target.budget : '0');
+            const description = prompt('Deskripsi:', target ? target.description : '');
+            const image = prompt('URL Gambar (opsional):', target ? target.image || '' : '');
+            const link = prompt('Link (opsional):', target ? target.link || '' : '');
+            if (name && price && deadline && budget) {
+                targets[index] = { name, price: parseInt(price), deadline, budget: parseInt(budget), description, image, link };
+                renderTargets();
+            }
+        }
+
+        function togglePaymentDetails() {
+            const method = document.getElementById('payment-method').value;
+            const details = document.getElementById('payment-details');
+            if (method === 'digital') {
+                details.classList.add('show');
+                document.getElementById('account-number').required = true;
+                document.getElementById('account-name').required = true;
+            } else {
+                details.classList.remove('show');
+                document.getElementById('account-number').required = false;
+                document.getElementById('account-name').required = false;
+            }
+        }
+
+        document.getElementById('profile-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            profile = {
+                className: document.getElementById('class-name').value,
+                totalStudents: parseInt(document.getElementById('total-students').value) || 0,
+                paymentMethod: document.getElementById('payment-method').value,
+                digitalType: document.getElementById('digital-type').value,
+                accountNumber: document.getElementById('account-number').value,
+                accountName: document.getElementById('account-name').value
+            };
+            saveCurrentAccount();
+            alert('Profil tersimpan');
+            loadProfile();
+        });
+
+        function loadProfile() {
+            if (profile && Object.keys(profile).length) {
+                document.getElementById('class-name').value = profile.className || '';
+                document.getElementById('total-students').value = profile.totalStudents || '';
+                document.getElementById('payment-method').value = profile.paymentMethod || 'cash';
+                document.getElementById('digital-type').value = profile.digitalType || 'dana';
+                document.getElementById('account-number').value = profile.accountNumber || '';
+                document.getElementById('account-name').value = profile.accountName || '';
+            }
+            togglePaymentDetails();
+        }
+
+        // Initialize app state on load
+        window.addEventListener('DOMContentLoaded', function() {
+            if (user && user.email) {
+                // load account-scoped data for persisted user
+                loadAccountData(user.email);
+                renderStudents();
+                renderTargets();
+                loadProfile();
+                showPage('home-page');
+            } else {
+                showPage('login-page');
+            }
+            updateTotal();
+        });
+    </script>
+</body>
+</html>
